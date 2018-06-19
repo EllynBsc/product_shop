@@ -5,6 +5,8 @@ class CreateOrders < ActiveRecord::Migration[5.1]
       t.float :total_bill
       t.datetime :estimated_delivery_day
       t.string :state
+      t.string :address
+      t.references :user, foreign_key: true
 
       t.timestamps
     end

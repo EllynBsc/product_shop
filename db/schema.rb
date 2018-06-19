@@ -27,13 +27,11 @@ ActiveRecord::Schema.define(version: 20180327123805) do
   create_table "order_items", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "product_id"
-    t.bigint "order_id"
     t.integer "quantity"
     t.float "total_price"
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
     t.index ["user_id"], name: "index_order_items_on_user_id"
   end
@@ -43,15 +41,17 @@ ActiveRecord::Schema.define(version: 20180327123805) do
     t.float "total_bill"
     t.datetime "estimated_delivery_day"
     t.string "state"
+    t.string "address"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
-    t.integer "price"
+    t.integer "unit_price"
     t.string "title"
     t.text "description"
-    t.boolean "availability"
     t.float "average_rating"
     t.integer "stock"
     t.text "specification"
@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(version: 20180327123805) do
 
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
-  add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_items", "users"
+  add_foreign_key "orders", "users"
   add_foreign_key "reviews", "orders"
   add_foreign_key "reviews", "products"
   add_foreign_key "tags", "products"
