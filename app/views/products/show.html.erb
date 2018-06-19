@@ -1,9 +1,15 @@
 <h1>Products#show</h1>
 <p>Find me in app/views/products/show.html.erb</p>
 
-
 <%= @product.title %>
 <%= @product.unit_price %>
 <%= @product.description %>
 <%= @product.average_rating  %>
 <%= @product.stock %>
+
+<%= simple_form_for [@product, @cart_item] do |f| %>
+  <%= f.input :quantity, label: 'quantity', error: 'quantity is mandatory, please specify one' %>
+  <%= f.button :submit %>
+<% end %>
+
+

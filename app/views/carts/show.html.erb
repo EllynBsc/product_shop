@@ -1,0 +1,10 @@
+<h1>Carts#show</h1>
+<p>Find me in app/views/carts/show.html.erb</p>
+
+<% @cart.cart_items.each do |cart_item| %>
+<%= cart_item.product.title %>
+<%= cart_item.product.description %>
+<%= cart_item.quantity%>
+<% end %>
+
+<p>for a total of: </p>

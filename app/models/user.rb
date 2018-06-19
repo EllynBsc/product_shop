@@ -4,7 +4,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :favorites
-  has_many :order_items
   has_many :products, through: :favorites
-  has_many :orders, through: :order_items
+  has_one :cart
+
+  after_create :set_cart
+
+  def set_cart
+    Cart.create(user_id: self.id)
+  end
+
 end
