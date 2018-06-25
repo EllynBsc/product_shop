@@ -10,33 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180327123805) do
+ActiveRecord::Schema.define(version: 20180619193402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "favorites", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_favorites_on_product_id"
-    t.index ["user_id"], name: "index_favorites_on_user_id"
-  end
-
-  create_table "order_items", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "product_id"
-    t.integer "quantity"
+  create_table "cart_items", force: :cascade do |t|
     t.float "total_price"
-    t.string "state"
+    t.integer "quantity"
+    t.bigint "product_id"
+    t.bigint "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_order_items_on_product_id"
-    t.index ["user_id"], name: "index_order_items_on_user_id"
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
 
-  create_table "orders", force: :cascade do |t|
+  create_table "carts", force: :cascade do |t|
     t.datetime "date"
     t.float "total_bill"
     t.datetime "estimated_delivery_day"
@@ -45,7 +35,16 @@ ActiveRecord::Schema.define(version: 20180327123805) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_orders_on_user_id"
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_favorites_on_product_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -61,13 +60,13 @@ ActiveRecord::Schema.define(version: 20180327123805) do
 
   create_table "reviews", force: :cascade do |t|
     t.bigint "product_id"
-    t.bigint "order_id"
+    t.bigint "cart_id"
     t.string "title"
     t.text "description"
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["order_id"], name: "index_reviews_on_order_id"
+    t.index ["cart_id"], name: "index_reviews_on_cart_id"
     t.index ["product_id"], name: "index_reviews_on_product_id"
   end
 
@@ -101,12 +100,12 @@ ActiveRecord::Schema.define(version: 20180327123805) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "users"
   add_foreign_key "favorites", "products"
   add_foreign_key "favorites", "users"
-  add_foreign_key "order_items", "products"
-  add_foreign_key "order_items", "users"
-  add_foreign_key "orders", "users"
-  add_foreign_key "reviews", "orders"
+  add_foreign_key "reviews", "carts"
   add_foreign_key "reviews", "products"
   add_foreign_key "tags", "products"
 end

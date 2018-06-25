@@ -1,6 +1,6 @@
-class CreateOrders < ActiveRecord::Migration[5.1]
+class CreateCarts < ActiveRecord::Migration[5.1]
   def change
-    create_table :orders do |t|
+    create_table :carts do |t|
       t.datetime :date
       t.float :total_bill
       t.datetime :estimated_delivery_day
